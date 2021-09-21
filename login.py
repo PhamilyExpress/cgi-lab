@@ -17,12 +17,11 @@ cookie = http.cookies.SimpleCookie(os.environ["HTTP_COOKIE"])
 usernameCookie = ""
 passwordCookie = ""
 
-if cookie.get("Username"):
-    usernameCookie = cookie.get("Username").value
-if cookie.get("Password"):
-    passwordCookie = cookie.get("Password").value
+if cookie.get("Username") and cookie.get("Password"):
+  usernameCookie = cookie.get("Username").value
+  passwordCookie = cookie.get("Password").value
 
-if not username and not password:
+if username == None or password == None:
   print(login_page())
 elif usernameCookie == secret.username and passwordCookie == secret.password:
   print(secret_page(username, password))
