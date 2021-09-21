@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-import  cgi, os, requests, secret
+import  cgi, os, secret, http.cookies
 from templates import login_page, secret_page
 
 form = cgi.FieldStorage()
@@ -12,9 +12,15 @@ if username == secret.username and password == secret.password:
   print("Set-Cookie:Username = %s;" % username)
   print("Set-Cookie:Password = %s;" % password)
 
-request = requests.get('http://localhost:8080/login.py')
-usernameCookie = request.cookies('Username')
-passwordCookie = request.cookies('Password')
+cookie = http.cookies.SimpleCookie(os.environ["HTTP_COOKIE"])
+
+usernameCookie = ""
+passwordCookie = ""
+
+if cookie.get("Username"):
+    usernameCookie = cookie.get("Username").value
+if cookie.get("Password"):
+    passwordCookie = cookie.get("Password").value
 
 if not username and not password:
   print(login_page())
